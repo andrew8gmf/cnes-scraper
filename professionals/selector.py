@@ -47,7 +47,7 @@ for option in select:
 
             if name is not None:
                 name = row.find("a").contents[0]
-                if myDb.professionals.find_one({"Profissional": str(name)}):
+                if myDb.professionals.find_one({"professional": str(name)}):
                     continue
                 else:
                     link = firefox.find_element_by_link_text(str(name))
