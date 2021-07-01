@@ -55,26 +55,27 @@ for option in select:
                     
                     profile_page = firefox.page_source
                     soup = BeautifulSoup(profile_page, "lxml")
-
-                    table = soup.find("table", attrs={"id": "example"})
+                    div = soup.find("div", attrs={"id": "conteudo", "class": "janela_popup"})
+                    table = div.find("table", attrs={"id": "example", "class": "display dataTable"})
                     fields = []
 
                     for row in table.find_all("tr"):
                         for item in row.find_all("td"):
                             fields.append(item.text)
                             if len(fields) > 10:
-                                if fields[10] == "NÃO":
-                                    speciality = fields[2]
-                                    establishment = fields[5]
-                                    if myDb.professionals.find_one({"establishment": str(establishment)}):
-                                        continue
-                                    else:
-                                        myDb.professionals.insert_one({
-                                            "professional" : str(name),
-                                            "establishment" : str(establishment),
-                                            "speciality" : str(speciality),
-                                        })
-                                        print(establishment)
+                                speciality = fields[2]
+                                establishment = fields[5]
+                                sus = fields[10]
+                                if myDb.professionals.find_one({"establishment": str(establishment)}):
+                                    continue
+                                else:
+                                    myDb.professionals.insert_one({
+                                        "professional" : str(name),
+                                        "establishment" : str(establishment),
+                                        "speciality" : str(speciality),
+                                        "sus" : str(sus),
+                                    })
+                                    print(establishment)
                         #print(fields)
                         fields.clear()
                         
